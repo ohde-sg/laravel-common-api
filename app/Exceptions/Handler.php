@@ -3,8 +3,6 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Validation\ValidationException;
-use Exception;
 
 class Handler extends ExceptionHandler
 {
@@ -34,17 +32,7 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (ValidationException $e) {
-            //TODO
-        });
-
-        $this->renderable(function (ValidationException $e, $request) {
-            return response()->error('入力値にエラーがあります', $e->errors());
-        });
-
-        $this->renderable(function (Exception $e, $request) {
-            return response()->fatalError();
-        });
+        //
     }
 
 }

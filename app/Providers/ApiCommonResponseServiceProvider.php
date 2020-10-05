@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use App\Exceptions\ApiCustomHandler;
 use Response;
 
 class ApiCommonResponseServiceProvider extends ServiceProvider
@@ -14,7 +16,7 @@ class ApiCommonResponseServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(ExceptionHandler::class, ApiCustomHandler::class);
     }
 
     /**
@@ -38,6 +40,14 @@ class ApiCommonResponseServiceProvider extends ServiceProvider
                 'msg'      => $msg,
                 'errors'   => $errors
             ], 400);
+        });
+
+        // not found
+        Response::macro('notFound', function () {
+            return response()->json([
+                'success'  => false,
+                'msg'      => '存在しないアクションです。',
+            ], 404);
         });
 
         // fatalError : 致命的なエラー
